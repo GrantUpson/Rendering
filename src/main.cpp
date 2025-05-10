@@ -1,7 +1,13 @@
 #define GLFW_INCLUDE_NONE
 #include "shader.h"
 #include "stb_image/stb_image.h"
+#include "types.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <GLFW/glfw3.h>
+#include <algorithm>
 #include <cmath>
 #include <glbinding/gl/gl.h>
 #include <glbinding/glbinding.h>
@@ -121,6 +127,8 @@ int main() {
     stbi_image_free((void*)textureData);
 
 
+    const uint32 transformLocation = glGetUniformLocation(shader.ID, "transform");
+
     // Loop
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Comment this out to disable wireframe
     float currentOpacity = 1.0f;
@@ -140,7 +148,21 @@ int main() {
             shader.SetFloat("opacity", currentOpacity);
         }
 
+        Matrix4 transform(1.0);
+        transform = glm::scale(transform, glm::vec3(0.5f, 0.5f, 0.5f));
+        transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(transform));
+
         // Draw the vertices using the indices specified by the bound index buffer
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+        Matrix4 transform2(1.0);
+        float scale = std::sin(glfwGetTime());
+        transform2 = glm::translate(transform2, glm::vec3(-0.5f, 0.5f, 0.0f));
+        transform2 = glm::scale(transform2, glm::vec3(scale, scale, scale));
+
+        glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(transform2));
+
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         glfwSwapBuffers(window);
