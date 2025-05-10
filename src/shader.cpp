@@ -60,8 +60,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     }
     // activate the shader
     // ------------------------------------------------------------------------
-    void Shader::Use()
-    {
+    void Shader::Use() const {
         glUseProgram(ID);
     }
     // utility uniform functions

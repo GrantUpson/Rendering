@@ -1,8 +1,12 @@
 #version 430 core
 
+in vec2 outTextureCoordinates;
 out vec4 FragColor;
-in vec3 outColour;
+
+uniform sampler2D wallTexture;
+uniform float opacity;
 
 void main() {
-   FragColor = vec4(outColour, 1.0f);
+   vec4 colour = texture(wallTexture, outTextureCoordinates);
+   FragColor = vec4(colour.rgb, opacity);
 }

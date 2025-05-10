@@ -47,6 +47,7 @@ include_directories(
 set(SOURCE_FILES
         src/main.cpp
         libs/stb_image/stb_image.cpp
+        src/shader.cpp
 )
 
 # Windows specific source files and includes.
@@ -63,8 +64,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     include_directories(include/platform/linux)
 
     set(SOURCE_FILES ${SOURCE_FILES}
-            src/shader.cpp
-            src/shader.h
 
     )
 endif()
